@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\GeanTabanag\\OneDrive\\Desktop\\CC-APPSDEV\\Midterm\\Week4\\StudentRosterApi\\StudentRosterApi.csproj": {}
+    "C:\\Users\\GeanTabanag\\OneDrive\\Desktop\\CC-APPSDEV\\Midterm\\Week5\\StudentRosterDbApi\\StudentRosterApi.csproj": {}
   },
   "projects": {
-    "c:\\Users\\GeanTabanag\\OneDrive\\Desktop\\CC-APPSDEV\\Midterm\\Week4\\StudentRosterApi\\StudentRosterApi.csproj": {
+    "C:\\Users\\GeanTabanag\\OneDrive\\Desktop\\CC-APPSDEV\\Midterm\\Week5\\StudentRosterDbApi\\StudentRosterApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\GeanTabanag\\OneDrive\\Desktop\\CC-APPSDEV\\Midterm\\Week4\\StudentRosterApi\\StudentRosterApi.csproj",
+        "projectUniqueName": "C:\\Users\\GeanTabanag\\OneDrive\\Desktop\\CC-APPSDEV\\Midterm\\Week5\\StudentRosterDbApi\\StudentRosterApi.csproj",
         "projectName": "StudentRosterApi",
-        "projectPath": "c:\\Users\\GeanTabanag\\OneDrive\\Desktop\\CC-APPSDEV\\Midterm\\Week4\\StudentRosterApi\\StudentRosterApi.csproj",
+        "projectPath": "C:\\Users\\GeanTabanag\\OneDrive\\Desktop\\CC-APPSDEV\\Midterm\\Week5\\StudentRosterDbApi\\StudentRosterApi.csproj",
         "packagesPath": "C:\\Users\\GeanTabanag\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\GeanTabanag\\OneDrive\\Desktop\\CC-APPSDEV\\Midterm\\Week4\\StudentRosterApi\\obj\\",
+        "outputPath": "C:\\Users\\GeanTabanag\\OneDrive\\Desktop\\CC-APPSDEV\\Midterm\\Week5\\StudentRosterDbApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\GeanTabanag\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -49,6 +49,30 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[10.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[10.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[10.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[10.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.12, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
