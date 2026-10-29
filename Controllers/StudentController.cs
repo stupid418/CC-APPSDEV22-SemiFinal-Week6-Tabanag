@@ -1,108 +1,49 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StudentRosterDbApi.Data;
-using StudentRosterDbApi.Models;
 
-namespace StudentRosterDbApi.Controllers{
-[ApiController]
-    [Route("api/[controller]")]  
+namespace StudentRosterDbApi.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize] // Requires valid JWT for ALL methods in this controller
     public class StudentsController : ControllerBase
     {
-        
-        private readonly AppDbContext _context;
+        private readonly IStudentService _studentService;
 
-        // Inject DbContext via Constructor
-        public StudentsController(AppDbContext context)
+        public StudentsController(IStudentService studentService)
         {
-            _context = context;
+            _studentService = studentService;
         }
 
-        // GET: api/students
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAllStudents()
         {
-            var students = await _context.Students.ToListAsync();
+            var students = await _studentService.GetAllStudentsAsync();
             return Ok(students);
         }
 
-        // GET: api/students/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetStudentById(int id)
-        {
-            var student = await _context.Students.FindAsync(id);
-
-            if (student == null)
-            {
-                return NotFound(new { message = $"Student with ID {id} not found." });
-            }
-
-            return Ok(student);
-        }
-
-        // POST: api/students
         [HttpPost]
-        public async Task<IActionResult> CreateStudent([FromBody] Student newStudent)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateStudent([FromBody] StudentCreateDto dto)
         {
-            if (string.IsNullOrWhiteSpace(newStudent.FirstName) || string.IsNullOrWhiteSpace(newStudent.LastName))
-            {
-                return BadRequest(new { message = "First name and last name are required." });
-            }
-
-            _context.Students.Add(newStudent);
-            await _context.SaveChangesAsync(); // Saves to database
-
-            return CreatedAtAction(nameof(GetStudentById), new { id = newStudent.Id }, newStudent);
+            // Note: [ApiController] automatically handles Data Annotation validation
+            // and returns 400 Bad Request if it fails.
+            var createdStudent = await _studentService.CreateStudentAsync(dto);
+            return CreatedAtAction(nameof(GetAllStudents), new { id = createdStudent.Id }, createdStudent);
         }
 
-        // PUT: api/students/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateStudent(int id, [FromBody] Student updatedStudent)
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")] // ONLY users with "Admin" role can delete
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> DeleteStudent(int id)
         {
-            if (id != updatedStudent.Id)
-            {
-                return BadRequest(new { message = "ID mismatch." });
-            }
-
-            var existingStudent = await _context.Students.FindAsync(id);
-            if (existingStudent == null)
-            {
-                return NotFound();
-            }
-
-            existingStudent.FirstName = updatedStudent.FirstName;
-            existingStudent.LastName = updatedStudent.LastName;
-            existingStudent.Course = updatedStudent.Course;
-            existingStudent.YearLevel = updatedStudent.YearLevel;
-
-            await _context.SaveChangesAsync();
-
+            // (Implement delete logic in service for Attempt 2)
             return NoContent();
         }
-
-        // DELETE: api/students/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent (int id)
-        {
-            var student = await _context.Students.FindAsync(id);
-            if  (student == null)
-            {
-                return NotFound();
-            }
-
-            _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
-
-            return NoContent ();
-            }
-
-       [HttpGet("course/{courseName}")]
-        public async Task<IActionResult> GetStudentsByCourse(string courseName)
-         {
-            var students = await _context.Students
-            .Where(s => s.Course.Equals(courseName, StringComparison.OrdinalIgnoreCase))
-            .ToListAsync();
-            return Ok(students);
-         }
     }
 }
-       
