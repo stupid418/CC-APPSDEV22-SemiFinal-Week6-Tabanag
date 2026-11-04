@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace StudentRosterDbApi.Controllers
 {
@@ -20,12 +20,19 @@ namespace StudentRosterDbApi.Controllers
                 return Ok(new { token });
             }
 
+            if (request.Username == "user" && request.Password == "password123")
+            {
+                var token = GenerateJwtToken(request.Username, "User");
+                return Ok(new { token });
+            }
+
             return Unauthorized(new { message = "Invalid credentials" });
         }
 
         private string GenerateJwtToken(string username, string role)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsAVeryLongAndSecureSecretKeyForLabPurposesOnly123!"));
+            var securityKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("ThisIsAVeryLongAndSecureSecretKeyForLabPurposesOnly123!"));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
@@ -45,5 +52,10 @@ namespace StudentRosterDbApi.Controllers
         }
     }
 
-    public class LoginRequest { public string Username { get; set; } = ""; public string Password { get; set; } = ""; }
+    public class LoginRequest
+    {
+        public string Username { get; set; } = "Gean";
+
+        public string Password { get; set; } = "password123";
+    }
 }

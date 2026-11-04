@@ -1,15 +1,13 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using StudentRosterDbApi.Models; // Ensure this namespace matches your DTO folder layout
+using StudentRosterDbApi.DTOs;
 
 namespace StudentRosterDbApi.Services
 {
     public interface IStudentService
     {
-        // Contract signature for fetching the roster
         Task<List<StudentDto>> GetAllStudentsAsync();
 
-        // Contract signature for creating a new student record
-        Task<Student> CreateStudentAsync(StudentCreateDto dto);
+        Task<StudentDto> CreateStudentAsync(StudentCreateDto dto);
+
+        Task<bool> DeleteStudentAsync(int id);
     }
 }

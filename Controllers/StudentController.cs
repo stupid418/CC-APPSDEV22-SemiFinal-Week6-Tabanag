@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudentRosterDbApi.DTOs;
+using StudentRosterDbApi.Services;
 
 namespace StudentRosterDbApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // Requires valid JWT for ALL methods in this controller
+    [Authorize] // Requires a valid JWT for ALL methods in this controller
     public class StudentsController : ControllerBase
     {
         private readonly IStudentService _studentService;
@@ -40,9 +42,15 @@ namespace StudentRosterDbApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteStudent(int id)
         {
-            // (Implement delete logic in service for Attempt 2)
+            var deleted = await _studentService.DeleteStudentAsync(id);
+            if (!deleted)
+            {
+                return NotFound(new { message = $"Student with ID {id} not found." });
+            }
+
             return NoContent();
         }
     }
